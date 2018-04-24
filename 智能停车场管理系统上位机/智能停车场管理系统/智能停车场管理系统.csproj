@@ -7,8 +7,8 @@
     <ProjectGuid>{9763FCCE-202B-45AD-B49B-B7F0D2D2E0E6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>智能停车场管理系统给</RootNamespace>
-    <AssemblyName>智能停车场管理系统给</AssemblyName>
+    <RootNamespace>智能停车场管理系统</RootNamespace>
+    <AssemblyName>智能停车场管理系统</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>发布\</PublishUrl>
@@ -78,6 +78,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

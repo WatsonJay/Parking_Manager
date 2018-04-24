@@ -16,7 +16,9 @@ namespace 智能停车场管理系统
         bool open = false;
         public delegate void HandleInterfaceUpdataDelegate(string text);
         private HandleInterfaceUpdataDelegate interfaceUpdataHandle;
-        int a;
+        int total_ParkingA = 9;
+        int total_ParkingB = 9;
+        string Car = "";
         #endregion
 
         //窗体初始化
@@ -42,6 +44,19 @@ namespace 智能停车场管理系统
                 MessageBox.Show("未检测到设备\r\n");
 
             }
+            totalcarnum.Text = (total_ParkingA + total_ParkingB).ToString();
+            parkAnum.Text = total_ParkingA.ToString();
+            parkBnum.Text = total_ParkingB.ToString();
+            btnnumber.Enabled = true;
+            btnspeed.Enabled = true;
+            Carin.Enabled = false;
+            Carout.Enabled = false;
+            CarPark.Enabled = false;
+            radioButton2.Enabled = false;
+            radioButton1.Enabled = false;
+            btnReserch.Enabled = true;
+            AcanPark.BackColor = Color.Lime;
+            BcanPark.BackColor = Color.Lime;
         }
         #endregion
 
@@ -126,6 +141,9 @@ namespace 智能停车场管理系统
                 btnOpen.Text = "关闭";
                 btnnumber.Enabled = false;
                 btnspeed.Enabled = false;
+                Carin.Enabled = true;
+                CarPark.Enabled = true;
+                Carout.Enabled = true;
                 open = true;
                 btnReserch.Enabled = false;
                 radioButton2.Enabled = true;
@@ -142,6 +160,9 @@ namespace 智能停车场管理系统
                     open = false;
                     btnnumber.Enabled = true;
                     btnspeed.Enabled = true;
+                    Carin.Enabled = false;
+                    Carout.Enabled = false;
+                    CarPark.Enabled = false;
                     radioButton2.Enabled = false;
                     radioButton1.Enabled = false;
                     btnReserch.Enabled = true;
@@ -185,9 +206,500 @@ namespace 智能停车场管理系统
 
         #endregion
 
-        //串口设备连接状态测试
-        #region 串口设备连接状态测试
+
+        //车辆进场数据模拟显示
+        #region 车辆进场数据模拟显示
+        private void button1_Click(object sender, EventArgs e)//车辆停入
+        {
+            Car = CarPark.Text;
+            try
+            {
+                CarParkinWhere(Car);
+                totalcarnum.Text = (total_ParkingA + total_ParkingB).ToString();
+                parkAnum.Text = total_ParkingA.ToString();
+                parkBnum.Text = total_ParkingB.ToString();
+                if(total_ParkingA==0)
+                {
+                    AcanPark.BackColor = Color.Silver;
+                }
+                else
+                {
+                    AcanPark.BackColor = Color.Lime;
+                }
+                if (total_ParkingB == 0)
+                {
+                    BcanPark.BackColor = Color.Silver;
+                }
+                else
+                {
+                    BcanPark.BackColor = Color.Lime;
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+         private void Carout_Click(object sender, EventArgs e)
+        {
+            Car = CarPark.Text;
+            try
+            {
+                CarParkoutWhere(Car);
+                totalcarnum.Text = (total_ParkingA + total_ParkingB).ToString();
+                parkAnum.Text = total_ParkingA.ToString();
+                parkBnum.Text = total_ParkingB.ToString();
+                if (total_ParkingA == 0)
+                {
+                    AcanPark.BackColor = Color.Silver;
+                }
+                else
+                {
+                    AcanPark.BackColor = Color.Lime;
+                }
+                if (total_ParkingB == 0)
+                {
+                    BcanPark.BackColor = Color.Silver;
+                }
+                else
+                {
+                    BcanPark.BackColor = Color.Lime;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
         #endregion
+
+
+         //车辆进场数据模拟显示函数（没什么用别看）
+        #region 车辆进场数据模拟显示函数（真的没什么用）
+        //怎么还是点开呀QAQ，哼
+        private void CarParkinWhere(string message)//进场分区
+         {
+             string[] sArray = Car.Split('0');
+             if (sArray[0] == "A")
+             {
+                 CarParkinA(Car);
+                 if (total_ParkingA > 0)
+                 {
+                     total_ParkingA -= 1;
+                 }
+                 else
+                 {
+                     throw new Exception("该区无车位");
+                 }
+                 
+             }
+             else if (sArray[0] == "B")
+             {
+                 CarParkinB(Car);
+                 if (total_ParkingB > 0)
+                 {
+                   total_ParkingB -= 1;
+                 }
+                 else
+                 {
+                     throw new Exception("该区无车位");
+                 }
+                 
+             }
+             else
+             {
+                 throw new Exception("未找到相应车位");
+             }
+         }
+        //别往下翻(*￣3￣)╭♡❀小花花砸你
+        private void CarParkinA(string message)//A区进库模拟
+         {
+             switch (message)
+             {
+                 case "A01": if (ParkingA1.BackColor == Color.Silver)
+                     {
+                         ParkingA1.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "A02": if (ParkingA2.BackColor == Color.Silver)
+                     {
+                         ParkingA2.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "A03": if (ParkingA3.BackColor == Color.Silver)
+                     {
+                         ParkingA3.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "A04": if (ParkingA4.BackColor == Color.Silver)
+                     {
+                         ParkingA4.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "A05": if (ParkingA5.BackColor == Color.Silver)
+                     {
+                         ParkingA5.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "A06": if (ParkingA6.BackColor == Color.Silver)
+                     {
+                         ParkingA6.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "A07": if (ParkingA7.BackColor == Color.Silver)
+                     {
+                         ParkingA7.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "A08": if (ParkingA8.BackColor == Color.Silver)
+                     {
+                         ParkingA8.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "A09": if (ParkingA9.BackColor == Color.Silver)
+                     {
+                         ParkingA9.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 default: throw new Exception("车位信息有误");
+             }
+         }
+        //还在看要生气了，눈_눈
+        private void CarParkinB(string message)//B区进库模拟
+         {
+             switch (message)
+             {
+                 case "B01": if (ParkingB1.BackColor == Color.Silver)
+                     {
+                         ParkingB1.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "B02": if (ParkingB2.BackColor == Color.Silver)
+                     {
+                         ParkingB2.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "B03": if (ParkingB3.BackColor == Color.Silver)
+                     {
+                         ParkingB3.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "B04": if (ParkingB4.BackColor == Color.Silver)
+                     {
+                         ParkingB4.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "B05": if (ParkingB5.BackColor == Color.Silver)
+                     {
+                         ParkingB5.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "B06": if (ParkingB6.BackColor == Color.Silver)
+                     {
+                         ParkingB6.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "B07": if (ParkingB7.BackColor == Color.Silver)
+                     {
+                         ParkingB7.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "B08": if (ParkingB8.BackColor == Color.Silver)
+                     {
+                         ParkingB8.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 case "B09": if (ParkingB9.BackColor == Color.Silver)
+                     {
+                         ParkingB9.BackColor = Color.Lime;
+                     }
+                     else
+                     {
+                         throw new Exception("该车位已经有车");
+                     }
+                     break;
+                 default: throw new Exception("车位信息有误");
+             }
+         }
+        //还看，生气了(╯‵□′)╯︵┻━┻
+        private void CarParkoutWhere(string message)//出场分区
+        {
+            string[] sArray = Car.Split('0');
+            if (sArray[0] == "A")
+            {
+                CarParkoutA(Car);
+                if (total_ParkingA < 9)
+                {
+                    total_ParkingA += 1;
+                }  
+                else
+                    throw new Exception("该区无车辆");
+            }
+            else if (sArray[0] == "B")
+            {
+                CarParkoutB(Car);
+                if (total_ParkingB < 9)
+                {
+                    total_ParkingB += 1;
+                }
+                    
+                else
+                    throw new Exception("该区无车辆");
+            }
+            else
+            {
+                throw new Exception("未找到相应车位");
+            }
+        }
+        //居然不听我的，哭唧唧( •ˍ•̀ू )
+        private void CarParkoutA(string message)//A区出库模拟
+        {
+            switch (message)
+            {
+                case "A01": if (ParkingA1.BackColor == Color.Lime)
+                    {
+                        ParkingA1.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "A02": if (ParkingA2.BackColor == Color.Lime)
+                    {
+                        ParkingA2.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "A03": if (ParkingA3.BackColor == Color.Lime)
+                    {
+                        ParkingA3.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "A04": if (ParkingA4.BackColor == Color.Lime)
+                    {
+                        ParkingA4.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "A05": if (ParkingA5.BackColor == Color.Lime)
+                    {
+                        ParkingA5.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "A06": if (ParkingA6.BackColor == Color.Lime)
+                    {
+                        ParkingA6.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "A07": if (ParkingA7.BackColor == Color.Lime)
+                    {
+                        ParkingA7.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "A08": if (ParkingA8.BackColor == Color.Lime)
+                    {
+                        ParkingA8.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "A09": if (ParkingA9.BackColor == Color.Lime)
+                    {
+                        ParkingA9.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                default: throw new Exception("车位信息有误");
+            }
+        }
+        //不理你了_(•̀ω•́ 」∠)_
+        private void CarParkoutB(string message)//B区进库模拟
+        {
+            switch (message)
+            {
+                case "B01": if (ParkingB1.BackColor == Color.Lime)
+                    {
+                        ParkingB1.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "B02": if (ParkingB2.BackColor == Color.Lime)
+                    {
+                        ParkingB2.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "B03": if (ParkingB3.BackColor == Color.Lime)
+                    {
+                        ParkingB3.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "B04": if (ParkingB4.BackColor == Color.Lime)
+                    {
+                        ParkingB4.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "B05": if (ParkingB5.BackColor == Color.Lime)
+                    {
+                        ParkingB5.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "B06": if (ParkingB6.BackColor == Color.Lime)
+                    {
+                        ParkingB6.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "B07": if (ParkingB7.BackColor == Color.Lime)
+                    {
+                        ParkingB7.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "B08": if (ParkingB8.BackColor == Color.Lime)
+                    {
+                        ParkingB8.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                case "B09": if (ParkingB9.BackColor == Color.Lime)
+                    {
+                        ParkingB9.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        throw new Exception("该车位无车");
+                    }
+                    break;
+                default: throw new Exception("车位信息有误");
+            }
+        }
+        #endregion
+
     }
 }
