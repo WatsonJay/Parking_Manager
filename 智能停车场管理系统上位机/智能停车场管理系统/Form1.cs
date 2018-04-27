@@ -18,6 +18,7 @@ namespace 智能停车场管理系统
         private HandleInterfaceUpdataDelegate interfaceUpdataHandle;
         int total_ParkingA = 9;
         int total_ParkingB = 9;
+        string a="";
         string Car = "";
         #endregion
 
@@ -234,6 +235,9 @@ namespace 智能停车场管理系统
                 {
                     BcanPark.BackColor = Color.Lime;
                 }
+                a = totalcarnum.Text + "," + parkAnum.Text + "," + parkBnum.Text;
+                PortWrite(a);
+                
             }
             catch(Exception ex)
             {
@@ -243,6 +247,7 @@ namespace 智能停车场管理系统
 
          private void Carout_Click(object sender, EventArgs e)
         {
+            
             Car = CarPark.Text;
             try
             {
@@ -266,6 +271,8 @@ namespace 智能停车场管理系统
                 {
                     BcanPark.BackColor = Color.Lime;
                 }
+                a = totalcarnum.Text + "," + parkAnum.Text + "," + parkBnum.Text;
+                PortWrite(a);
             }
             catch (Exception ex)
             {
