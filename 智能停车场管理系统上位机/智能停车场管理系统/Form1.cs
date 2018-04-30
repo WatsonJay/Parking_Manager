@@ -235,7 +235,7 @@ namespace 智能停车场管理系统
                 {
                     BcanPark.BackColor = Color.Lime;
                 }
-                a = totalcarnum.Text + "," + parkAnum.Text + "," + parkBnum.Text;
+                a = totalcarnum.Text + "|" + parkAnum.Text + "|" + parkBnum.Text;
                 PortWrite(a);
                 
             }
@@ -271,7 +271,7 @@ namespace 智能停车场管理系统
                 {
                     BcanPark.BackColor = Color.Lime;
                 }
-                a = totalcarnum.Text + "," + parkAnum.Text + "," + parkBnum.Text;
+                a = totalcarnum.Text + "|" + parkAnum.Text + "|" + parkBnum.Text;
                 PortWrite(a);
             }
             catch (Exception ex)
