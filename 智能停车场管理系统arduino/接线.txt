@@ -1,0 +1,6 @@
+zigbee TX->0
+       RX->1
+oled   SCK->A5
+       SDA->A4
+HC-SR04 Trig->7
+	Echo->8

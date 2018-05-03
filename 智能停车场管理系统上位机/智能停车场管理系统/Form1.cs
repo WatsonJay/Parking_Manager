@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Media;
 
 namespace 智能停车场管理系统
 {
@@ -20,6 +21,8 @@ namespace 智能停车场管理系统
         int total_ParkingB = 9;
         string a="";
         string Car = "";
+        string test="";
+        SoundPlayer player = new SoundPlayer();
         #endregion
 
         //窗体初始化
@@ -70,7 +73,34 @@ namespace 智能停车场管理系统
                 string text = string.Empty;
                 byte[] result = new byte[serialPort1.BytesToRead];
                 serialPort1.Read(result, 0, serialPort1.BytesToRead);
-                text = Encoding.UTF8.GetString(result);
+                test = Encoding.UTF8.GetString(result);
+                if (test=="1")
+                {
+                    if (total_ParkingB == 0 && total_ParkingB == 0)
+                    {
+                        player.SoundLocation = "n.wav";
+                        player.Load();
+                        player.Play();
+                    }
+                    else if (total_ParkingA <= 3 && total_ParkingA < total_ParkingB)
+                    {
+                        player.SoundLocation = "A.wav";
+                        player.Load();
+                        player.Play();
+                    }
+                    else if(total_ParkingB <= 3 && total_ParkingB < total_ParkingA)
+                    {
+                        player.SoundLocation = "B.wav";
+                        player.Load();
+                        player.Play();
+                    }
+                    else 
+                    {
+                        player.SoundLocation = "t.wav";
+                        player.Load();
+                        player.Play();
+                    }
+                }
             }
             catch
             {
@@ -707,6 +737,5 @@ namespace 智能停车场管理系统
             }
         }
         #endregion
-
     }
 }

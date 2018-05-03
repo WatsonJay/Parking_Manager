@@ -11,6 +11,8 @@ Adafruit_SSD1306 display(OLED_RESET);
 #define YPOS 1
 #define DELTAY 2
 #define LedPin 13 
+#define Trig 7 //引脚Tring 连接 IO D4  
+#define Echo 8 //引脚Echo 连接 IO D5   
 #define LOGO16_GLCD_HEIGHT 16                                                 
 #define LOGO16_GLCD_WIDTH  16 
  
@@ -23,6 +25,8 @@ int totalcarnum = 18;
 int totalcarA = 9;
 int totalcarB = 9;
 int a=0,c=0;
+float cm; //距离变量  
+float temp; //
 int commaPosition;
 
 static const uint8_t PROGMEM one_16x8[] = {0x00,0x00,0x00,0x08,0x38,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x3E,0x00,0x00};/*"1",0*/
@@ -83,6 +87,8 @@ void setup()
 { 
   pinMode(LedPin, OUTPUT);
   Serial.begin(9600); 
+  pinMode(Trig, OUTPUT);  
+  pinMode(Echo, INPUT);  
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3D (for the 128x64)  
 }
 
@@ -91,11 +97,9 @@ void cut(String message)
   commaPosition = message.indexOf('|');
   totalcarnum=message.substring(0,commaPosition).toInt();
   message = message.substring(commaPosition+1, message.length());
-  Serial.print(message+"/n");
   commaPosition = message.indexOf('|');
   totalcarA=message.substring(0,commaPosition).toInt();
   message = message.substring(commaPosition+1, message.length());
-  Serial.print(message+"/n");
   totalcarB = message.toInt();
 }
 void choose(int d,int b,int num)
@@ -121,7 +125,21 @@ void choose(int d,int b,int num)
     default:break;
   }
 }
-
+void carin() {  
+  //给Trig发送一个低高低的短时间脉冲,触发测距  
+  digitalWrite(Trig, LOW); //给Trig发送一个低电平  
+  delayMicroseconds(2);    //等待 2微妙  
+  digitalWrite(Trig,HIGH); //给Trig发送一个高电平  
+  delayMicroseconds(10);    //等待 10微妙  
+  digitalWrite(Trig, LOW); //给Trig发送一个低电平  
+  temp = float(pulseIn(Echo, HIGH)); //存储回波等待时间,  
+  cm = (temp * 17 )/1000; //把回波时间换算成cm  
+  
+  if(cm<5.0)
+  {
+    Serial.print('1');
+  }   
+}
 void test_SSD1306(void){
   display.clearDisplay();
   display.ShowCN_16(0,0, First_16x16,sizeof(First_16x16)/32,WHITE);
@@ -145,6 +163,7 @@ void loop()
 { 
     String receiveVal="";
     test_SSD1306();
+    carin();
     while (Serial.available() > 0)  
     {
         receiveVal += char(Serial.read());
